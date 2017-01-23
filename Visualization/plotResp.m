@@ -21,34 +21,37 @@ figHandle(10) = figure;
 plot(T,S(:,10)); grid on; xlabel('Time'); ylabel('$\dot{\beta}$');
 
 if F_SAVEPLOT
-    if ~exist('Plots','dir')
-        mkdir('Plots');
+    if ~exist('Data','dir')
+        mkdir('Data');
     end
     cl = round(clock);
     clt = '';
     for i=1:1:6
         clt= strcat(clt,num2str(cl(i),'%02.0f'));
     end
-    clt = strcat('Plots\Resp',clt);
-    mkdir(clt);
-    figure(figHandle(1));
-    print(strcat(clt,'\X'),'-depsc','-tiff');
-    figure(figHandle(2));
-    print(strcat(clt,'\Y'),'-depsc','-tiff');
-    figure(figHandle(3));
-    print(strcat(clt,'\Phi'),'-depsc','-tiff');
-    figure(figHandle(4));
-    print(strcat(clt,'\Alpha'),'-depsc','-tiff');
-    figure(figHandle(5));
-    print(strcat(clt,'\Beta'),'-depsc','-tiff');
-    figure(figHandle(6));
-    print(strcat(clt,'\VX'),'-depsc','-tiff');
-    figure(figHandle(7));
-    print(strcat(clt,'\VY'),'-depsc','-tiff');
-    figure(figHandle(8));
-    print(strcat(clt,'\VPhi'),'-depsc','-tiff');
-    figure(figHandle(9));
-    print(strcat(clt,'\VAlpha'),'-depsc','-tiff');
-    figure(figHandle(10));
-    print(strcat(clt,'\VBeta'),'-depsc','-tiff');
+    clt = strcat('Data\Resp',clt);
+    savefig(figHandle,clt)
+%     figure(figHandle(1));
+%     print(strcat(clt,'\X'),'-depsc','-tiff');
+%     figure(figHandle(2));
+%     print(strcat(clt,'\Y'),'-depsc','-tiff');
+%     figure(figHandle(3));
+%     print(strcat(clt,'\Phi'),'-depsc','-tiff');
+%     figure(figHandle(4));
+%     print(strcat(clt,'\Alpha'),'-depsc','-tiff');
+%     figure(figHandle(5));
+%     print(strcat(clt,'\Beta'),'-depsc','-tiff');
+%     figure(figHandle(6));
+%     print(strcat(clt,'\VX'),'-depsc','-tiff');
+%     figure(figHandle(7));
+%     print(strcat(clt,'\VY'),'-depsc','-tiff');
+%     figure(figHandle(8));
+%     print(strcat(clt,'\VPhi'),'-depsc','-tiff');
+%     figure(figHandle(9));
+%     print(strcat(clt,'\VAlpha'),'-depsc','-tiff');
+%     figure(figHandle(10));
+%     print(strcat(clt,'\VBeta'),'-depsc','-tiff');
+end
+if ~F_PLOT
+    close(figHandle)
 end

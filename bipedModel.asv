@@ -34,7 +34,7 @@ S(1,:) = [x0;y0;phi0;alpha0;beta0;vx0;vy0;vphi0;valpha0;vbeta0];
 feet = posFoot(S(1,1:5)',param);
 DS(1) = feet(2)>0;
 while T(end) < tFinal
-    tspan = T(end):dt:tFinal;
+    tspan = T(end):dt:tFinal
     if(DS(end) == 1)
         [Tp,Sp,TEp,SEp,Ie] = ode45(@flightDyn,[tspan, tspan(end)+dt],S(end,:),fltSimOpts);
         DS = [DS;ones(size(Tp))];
@@ -42,7 +42,7 @@ while T(end) < tFinal
         qplus = impactVelUpdate(Sp(end,:)');
         Sp(end,:) = [Sp(end,1:5)'; qplus];
     else
-        [Tp,Sp,TEp,SEp,Ie] = ode45(@groundDyn,[tspan, tspan(end)+dt],S(end,:),gndSimOpts);
+        [Tp,Sp,TEp,SEp,Ie] = ode45(@groundDyn,[tspan, tFinal],S(end,:),gndSimOpts);
         DS = [DS;zeros(size(Tp))];
     end
     S = [S;Sp];

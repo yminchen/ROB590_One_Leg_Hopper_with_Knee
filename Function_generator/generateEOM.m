@@ -9,7 +9,16 @@
 %           FCorGrav    
 %                       in1:[x y phi alpha beta vx vy vphi valpha vbeta]
 %                       in2:[m1 J1 lH m2 J2 l2 lL2 m3 J3 l3 lL3 g]   
-%           contPoint
+%           posFoot
+%                       in1:[x y phi alpha beta] 
+%                       in2:[m1 J1 lH m2 J2 l2 lL2 m3 J3 l3 lL3 g]
+%           posHip
+%                       in1:[x y phi alpha beta] 
+%                       in2:[m1 J1 lH m2 J2 l2 lL2 m3 J3 l3 lL3 g]
+%           posKnee
+%                       in1:[x y phi alpha beta] 
+%                       in2:[m1 J1 lH m2 J2 l2 lL2 m3 J3 l3 lL3 g]
+%           posBody
 %                       in1:[x y phi alpha beta] 
 %                       in2:[m1 J1 lH m2 J2 l2 lL2 m3 J3 l3 lL3 g]
 %           JcontPoint
@@ -83,6 +92,9 @@ end
 matlabFunction(M,'file','Functions\MassMatrix','vars',{q,param});
 matlabFunction(invM,'file','Functions\inverseMassMatrix','vars',{q,param});
 matlabFunction(fCG,'file','Functions\FCorGrav','vars',{[q;vq],param});
-matlabFunction(Foot,'file','Functions\contPoint','vars',{q,param});
+matlabFunction(Foot,'file','Functions\posFoot','vars',{q,param});
 matlabFunction(JFoot,'file','Functions\JcontPoint','vars',{q,param});
 matlabFunction(dJFoot,'file','Functions\dJcontPoint','vars',{[q;vq],param});
+matlabFunction(Hip,'file','Functions\posHip','vars',{q,param});
+matlabFunction(Knee,'file','Functions\posKnee','vars',{q,param});
+matlabFunction(CoG1,'file','Functions\posBody','vars',{q,param});
