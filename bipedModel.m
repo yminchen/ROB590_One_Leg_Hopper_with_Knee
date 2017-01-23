@@ -38,6 +38,7 @@ while T(end) < tFinal
     if(DS(end) == 1)
         [Tp,Sp,TEp,SEp,Ie] = ode45(@flightDyn,[tspan, tspan(end)+dt],S(end,:),fltSimOpts);
         DS = [DS;ones(size(Tp))];
+        
         DS(end) = 0;
         qplus = impactVelUpdate(Sp(end,:)');
         Sp(end,:) = [Sp(end,1:5)'; qplus];
