@@ -2,9 +2,9 @@
 clear; clc; clf; close all;
 addpath('Functions','Visualization','Dynamics','Events');
 %% Flags 
-F_PLOT = 0;             % Plot system response
+F_PLOT = 1;             % Plot system response
 F_ANIMATE = 0;          % Animate system response
-F_SAVEPLOT = 1;         % Save generated plot
+F_SAVEPLOT = 0;         % Save generated plot
 F_SAVEVID = 0;          % Save generated animation   
 %% Simulation control
 relTol  = 1e-6;         % Relative tolerance: Relative tolerance for ode45 numerical integration
@@ -14,10 +14,10 @@ tFinal  = 1;   %[s]    % Simulation end time
 
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
-y0 = 0.6;         %[m]    % initial Y position
+y0 = 0.6;       %[m]    % initial Y position
 phi0 = 0;       %[rad]  % initial angle between vertical and hip
-alpha0 = 0/4;     %[rad]  % iniial angle between hip and thigh
-beta0 = -0/4;      %[rad]  % initial angle between thigh and shank
+alpha0 = 0/4;   %[rad]  % iniial angle between hip and thigh
+beta0 = -0/4;   %[rad]  % initial angle between thigh and shank
 vx0 = 0;        %[m/s]  % initial X velociy 
 vy0 = 0;        %[m/s]  % initial Y velociy
 vphi0 = 0;      %[rad/s]% initial phi angular velocity
@@ -38,13 +38,37 @@ while T(end) < tFinal
     if(DS(end) == 1)
         [Tp,Sp,TEp,SEp,Ie] = ode45(@flightDyn,[tspan, tspan(end)+dt],S(end,:),fltSimOpts);
         DS = [DS;ones(size(Tp))];
-        
-        DS(end) = 0;
-        qplus = impactVelUpdate(Sp(end,:)');
-        Sp(end,:) = [Sp(end,1:5)'; qplus];
-    else
+        if(isempty(Ie)== 1) % Simulation timed out
+            display('Time out');
+        elseif(Ie == 1) % Touchdown event
+            display('Touchdown');
+            DS(end) = 0;
+            qplus = impactVelUpdate(Sp(end,:)');
+            Sp(end,:) = [Sp(end,1:5)'; qplus];
+        elseif(Ie == 2 || Ie == 3)
+            S = [S;Sp];
+            T = [T;Tp];
+            display('Contact point is not feet');
+            break;
+        else 
+            display('Flight Phase: Invalid event code');
+        end
+    elseif(DS(end) == 0)
         [Tp,Sp,TEp,SEp,Ie] = ode45(@groundDyn,[tspan, tspan(end)+dt],S(end,:),gndSimOpts);
         DS = [DS;zeros(size(Tp))];
+        if(isempty(Ie) == 1) % Simulation timed out
+            display('Time out');
+        elseif(Ie == 1) % Takeoff event
+            display('Takeoff');
+            DS(end) = 1;
+        elseif(Ie == 2 || Ie == 3)
+            S = [S;Sp];
+            T = [T;Tp];
+            display('Contact point is not feet');
+            break;
+        else 
+            display('Flight Phase: Invalid event code');
+        end
     end
     S = [S;Sp];
     T = [T;Tp];
