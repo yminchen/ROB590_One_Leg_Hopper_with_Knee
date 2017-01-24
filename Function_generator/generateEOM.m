@@ -60,7 +60,7 @@ vCoG2 = jacobian(CoG3,q)*vq;
 vCoG3 = jacobian(CoG3,q)*vq;
 
 % Lagrangian Calculations
-T = 0.5*( m1*sum(vCoG1.^2) + J1*vphi^2 + m2*sum(vCoG2.^2) + J2*(vphi+valpha)^2 + m3*sum(vCoG3.^2) + J3*(vphi+valpha+vbeta));
+T = 0.5*( m1*sum(vCoG1.^2) + J1*vphi^2 + m2*sum(vCoG2.^2) + J2*(vphi+valpha)^2 + m3*sum(vCoG3.^2) + J3*(vphi+valpha+vbeta)^2);
 U = m1*CoG1(2)*g + m2*CoG2(2)*g + m3*CoG3(2)*g;
 L = simplify(T-U);
 
