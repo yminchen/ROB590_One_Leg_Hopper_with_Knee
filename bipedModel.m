@@ -67,7 +67,7 @@ while T(end) < tFinal
             display('Contact point is not feet');
             break;
         else 
-            display('Flight Phase: Invalid event code');
+            display('Ground Phase: Invalid event code');
         end
     end
     S = [S;Sp];
