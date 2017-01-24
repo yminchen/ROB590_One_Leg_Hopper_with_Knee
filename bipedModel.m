@@ -1,11 +1,11 @@
 %% Some minor housekeeping 
 clear; clc; clf; close all;
-addpath('Functions','Visualization','Dynamics','Events');
+addpath('Functions','Visualization','Visualization/Terrain','Dynamics','Events');
 %% Flags 
-F_PLOT = 1;             % Plot system response
-F_ANIMATE = 0;          % Animate system response
+F_PLOT = 0;             % Plot system response
+F_ANIMATE = 1;          % Animate system response
 F_SAVEPLOT = 0;         % Save generated plot
-F_SAVEVID = 0;          % Save generated animation   
+F_SAVEVID = 1;          % Save generated animation   
 %% Simulation control
 relTol  = 1e-6;         % Relative tolerance: Relative tolerance for ode45 numerical integration
 absTol  = 1e-6;         % Absolute tolerance: Absolute tolerance for ode45 numerical integration 
@@ -16,8 +16,8 @@ tFinal  = 1;   %[s]    % Simulation end time
 x0 = 0;         %[m]    % initial X position 
 y0 = 0.6;       %[m]    % initial Y position
 phi0 = 0;       %[rad]  % initial angle between vertical and hip
-alpha0 = 0/4;   %[rad]  % iniial angle between hip and thigh
-beta0 = -0/4;   %[rad]  % initial angle between thigh and shank
+alpha0 = pi/4;     %[rad]  % iniial angle between hip and thigh
+beta0 = -pi/4;      %[rad]  % initial angle between thigh and shank
 vx0 = 0;        %[m/s]  % initial X velociy 
 vy0 = 0;        %[m/s]  % initial Y velociy
 vphi0 = 0;      %[rad/s]% initial phi angular velocity
@@ -75,11 +75,13 @@ while T(end) < tFinal
 end
 
 %% Post processing 
-if F_PLOT||F_SAVEPLOT
+if F_PLOT || F_SAVEPLOT
     plotResp
 else
 end
-% if F_ANIMATE
-%     if F_SAVEVID
-%     end
-% end
+
+
+%% Animation
+if F_ANIMATE
+    Animation(T,S,DS,tFinal,F_SAVEVID);    
+end
