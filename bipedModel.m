@@ -41,7 +41,8 @@ while T(end) < tFinal
     tspan = T(end):dt:tFinal;
     if(DS(end) == 1)
         [Tp,Sp,TEp,SEp,Ie] = ode45(@flightDyn,[tspan, tspan(end)+dt],S(end,:),fltSimOpts);
-        DS = [DS;ones(size(Tp))];
+        sz = size(Sp,1);
+        DS = [DS;ones(sz-1,1)];
         if(isempty(Ie)== 1) % Simulation timed out
             display('Time out');
         elseif(Ie == 1) % Touchdown event
@@ -50,8 +51,8 @@ while T(end) < tFinal
             qplus = impactVelUpdate(Sp(end,:)');
             Sp(end,:) = [Sp(end,1:5)'; qplus];
         elseif(Ie == 2 || Ie == 3)
-            S = [S;Sp];
-            T = [T;Tp];
+            S = [S;Sp(2:sz,:)];
+            T = [T;Tp(2:sz,:)];
             display('Contact point is not feet');
             break;
         else 
@@ -59,23 +60,24 @@ while T(end) < tFinal
         end
     elseif(DS(end) == 0)
         [Tp,Sp,TEp,SEp,Ie] = ode45(@groundDyn,[tspan, tspan(end)+dt],S(end,:),gndSimOpts);
-        DS = [DS;zeros(size(Tp))];
+        sz = size(Sp,1);
+        DS = [DS;zeros(sz-1,1)];
         if(isempty(Ie) == 1) % Simulation timed out
             display('Time out');
         elseif(Ie == 1) % Takeoff event
             display('Takeoff');
             DS(end) = 1;
         elseif(Ie == 2 || Ie == 3)
-            S = [S;Sp];
-            T = [T;Tp];
+            S = [S;Sp(2:sz,:)];
+            T = [T;Tp(2:sz,:)];
             display('Contact point is not feet');
             break;
         else 
             display('Ground Phase: Invalid event code');
         end
     end
-    S = [S;Sp];
-    T = [T;Tp];
+    S = [S;Sp(2:sz,:)];
+    T = [T;Tp(2:sz,:)];
 end
 
 %% Post processing 
