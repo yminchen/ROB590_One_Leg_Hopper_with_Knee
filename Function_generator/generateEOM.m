@@ -31,7 +31,7 @@
 %% Some Housekeeping 
 clear; clc; 
 %% State Variable declarations
-syms x y phi alpha beta vx vy vphi valpha vbeta 
+syms x y phi alpha beta vx vy vphi valpha vbeta
 q = [x; y; phi; alpha; beta];
 vq = [vx; vy; vphi; valpha; vbeta];
 %% Parameters
@@ -56,7 +56,7 @@ Foot = Knee + [lL3*sin(phi+alpha+beta);
 
 % Mass velocity calculations
 vCoG1 = jacobian(CoG1,q)*vq;
-vCoG2 = jacobian(CoG3,q)*vq;
+vCoG2 = jacobian(CoG2,q)*vq;
 vCoG3 = jacobian(CoG3,q)*vq;
 
 % Lagrangian Calculations

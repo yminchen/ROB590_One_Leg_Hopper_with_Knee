@@ -4,4 +4,6 @@ function dxdt = flightDyn(t,x)
     dxdt = zeros(size(x));
     dxdt(1:n/2) = x(n/2+1:n);
     dxdt(n/2+1:n) = inverseMassMatrix(x(1:5),param)*FCorGrav(x,param);
+%     dxdt(n/2+1:n) = MassMatrix(x(1:5),param)\FCorGrav(x,param);
+    
 end

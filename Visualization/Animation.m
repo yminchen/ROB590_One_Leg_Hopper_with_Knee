@@ -38,7 +38,7 @@ for ti=1:length(T)
 
     %%%%% Plot physical world (1st subfigure) %%%%
     hold on
-    axis equal; axis([boarderL boarderR -0.1 boarderT])
+    axis equal; axis([boarderL boarderR -2 boarderT])
 
     % Plot ground
     edge = Terrain_edge(ter_i);

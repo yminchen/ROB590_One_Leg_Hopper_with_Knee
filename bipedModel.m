@@ -14,7 +14,7 @@ tFinal  = 1;   %[s]    % Simulation end time
 
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
-y0 = 1;       %[m]    % initial Y position
+y0 = 0.6;       %[m]    % initial Y position
 phi0 = 0;       %[rad]  % initial angle between vertical and hip
 alpha0 = pi/4;     %[rad]  % iniial angle between hip and thigh
 beta0 = -pi/2;      %[rad]  % initial angle between thigh and shank
@@ -29,8 +29,12 @@ vbeta0 = 0;     %[rad/s]% initial beta angular  velocity
 gndSimOpts = odeset('RelTol',relTol,'AbsTol',absTol,'Events',@groundEvent,'MaxStep',dt);
 fltSimOpts = odeset('RelTol',relTol,'AbsTol',absTol,'Events',@flightEvent,'MaxStep',dt);    
 param = simParameters();
+
 T(1) = 0;
 S(1,:) = [x0;y0;phi0;alpha0;beta0;vx0;vy0;vphi0;valpha0;vbeta0];
+
+
+
 feet = posFoot(S(1,1:5)',param);
 DS(1) = feet(2)>0;
 while T(end) < tFinal
