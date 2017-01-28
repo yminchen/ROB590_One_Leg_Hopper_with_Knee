@@ -15,7 +15,7 @@ tFinal  = 1;   %[s]    % Simulation end time
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
 y0 = 0.6;       %[m]    % initial Y position
-phi0 = 0;       %[rad]  % initial angle between vertical and hip
+phi0 = 0-pi;       %[rad]  % initial angle between vertical and hip
 alpha0 = pi/4;     %[rad]  % iniial angle between hip and thigh
 beta0 = -pi/2;      %[rad]  % initial angle between thigh and shank
 vx0 = 0;        %[m/s]  % initial X velociy 
@@ -50,7 +50,7 @@ while T(end) < tFinal
             DS(end) = 0;
             qplus = impactVelUpdate(Sp(end,:)');
             Sp(end,:) = [Sp(end,1:5)'; qplus];
-        elseif(Ie == 2 || Ie == 3)
+        elseif(Ie == 2 || Ie == 3 || Ie == 4)
             S = [S;Sp(2:sz,:)];
             T = [T;Tp(2:sz,:)];
             display('Contact point is not feet');
@@ -67,7 +67,7 @@ while T(end) < tFinal
         elseif(Ie == 1) % Takeoff event
             display('Takeoff');
             DS(end) = 1;
-        elseif(Ie == 2 || Ie == 3)
+        elseif(Ie == 2 || Ie == 3 || Ie == 4)
             S = [S;Sp(2:sz,:)];
             T = [T;Tp(2:sz,:)];
             display('Contact point is not feet');
