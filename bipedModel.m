@@ -131,10 +131,10 @@ while T(end) < tFinal
             display('Contact point is not feet');
             break;
         elseif Ie == 6
-            S = [S;Sp(2:sz,:)];
-            T = [T;Tp(2:sz,:)];
             display('ERROR: Contact force was negative');
-            break;
+%             S = [S;Sp(2:sz,:)];
+%             T = [T;Tp(2:sz,:)];
+%             break;
         else 
             display('Ground Phase: Invalid event code');
         end

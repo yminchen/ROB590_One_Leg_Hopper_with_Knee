@@ -8,7 +8,7 @@ param.ter_i = 0;          % terrain label (0 is flag terrain)
 %% Joint mass, inertia and length parameters
 % Main body segment
 param.m1 = simParam(1);   %[kg]         Mass of main body segment 
-param.J1 = simParam(2)*1000;   %[kgm^2]      Rotational inertia of main body segment 
+param.J1 = simParam(2);   %[kgm^2]      Rotational inertia of main body segment 
 param.lH = simParam(3);   %[m]          Distance from main body CoM to hip center
 
 % Thigh segments
