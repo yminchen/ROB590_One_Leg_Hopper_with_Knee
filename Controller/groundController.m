@@ -24,7 +24,7 @@ end
 F(1) = -k*(Yparam.L_sp0-L_sp)*sin(theta);
 F(2) =  k*(Yparam.L_sp0-L_sp)*cos(theta);
 
-maxForce = 300;
+maxForce = 3000;%300;
 if (F(1)^2+F(2)^2)>maxForce^2
     F(1) = F(1)*maxForce/(F(1)^2+F(2)^2)^0.5;
     F(2) = F(2)*maxForce/(F(1)^2+F(2)^2)^0.5;
@@ -55,7 +55,7 @@ elseif phase == 3
 %     tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
     
     % P controller parameters
-    kp = 10;       % 2
+    kp = 10;%*50;       % 2
     % kd = 0.2;   % 0.2
     max_f = 100;    % maximum torque that can be applied
     % P controller for desired angular velocity.
@@ -76,12 +76,12 @@ F(3) = tau_balance;
 %% when the virtual spring is between the body and the foot
 %% Conversion
 phi_f = -(x(3)+x(4)+x(5));
-J = J_virtual_force(x(4),x(5),phi_f,Yparam.lH,Yparam.lL2,Yparam.lL3);
-tau_kh = J*[F(2);F(3)];
+JT = J_virtual_force(phi_f,x(5),x(4),Yparam.lH,Yparam.lL2,Yparam.lL3);
+tau_kh = JT*[F(2);F(3)];
 %% Hip joint
-tau(4) = -tau_kh(2);
+tau(4) = tau_kh(2);
 %% Knee joint
-tau(5) = tau_kh(1); % should be -tau_kh(1) ?
+tau(5) = tau_kh(1); 
 
 %% when the virtual spring is between the hip and the foot
 % %% Conversion

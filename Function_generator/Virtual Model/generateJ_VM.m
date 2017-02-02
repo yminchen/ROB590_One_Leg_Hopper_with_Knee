@@ -3,7 +3,7 @@ clear; clc;
 
 %% Defination
 syms alpha beta phi_f
-theta = [alpha beta phi_f];
+theta = [phi_f beta alpha]; 
 % Parameters
 syms lH lL2 lL3
 param = [lH lL2 lL3];

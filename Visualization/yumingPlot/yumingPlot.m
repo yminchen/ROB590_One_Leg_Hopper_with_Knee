@@ -1,6 +1,6 @@
 
 %% settings
-plot_flag_index = [14 15 16 17];
+plot_flag_index = [3 8 14 15 16 17];
 n_plot = 17;
 %P = [S, L, dL, E, tau, F_c]
 

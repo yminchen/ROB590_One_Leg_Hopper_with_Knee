@@ -41,7 +41,7 @@ function [position, isterminal, direction] = groundEvent(t,x,phase,k_des)
     direction(5)    = 1;
     
     %% dectect negative contact force
-    position(6)     = lamda(2);
-    isterminal(6)   = 1;
-    direction(6)    = 1;
+%     position(6)     = lamda(2);
+%     isterminal(6)   = 1;
+%     direction(6)    = 1;
 end

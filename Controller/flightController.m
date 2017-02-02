@@ -20,8 +20,8 @@ elseif dx_des<-Yparam.max_dx_des
     dx_des = -Yparam.max_dx_des;
 end
 
-dx_des = 1; % for tuning kp_rai
-% dx_des = 0; % for testing
+% dx_des = 1; % for tuning kp_rai
+dx_des = 0; % for testing
 
 % Raibert style controller parameters
 kp_rai = Yparam.k_f(3);

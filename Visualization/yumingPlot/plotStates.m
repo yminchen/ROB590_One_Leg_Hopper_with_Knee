@@ -13,7 +13,7 @@ if plot_flag(2)
 end
 if plot_flag(3)
     hold on
-    plot(T,P(:,3),'g','DisplayName','phi')
+    plot(T,P(:,3),'Color',[0 0.5 0],'DisplayName','phi')
     hold off 
 end
 if plot_flag(4)
@@ -38,7 +38,7 @@ if plot_flag(7)
 end
 if plot_flag(8)
     hold on
-    plot(T,P(:,8),'g--','DisplayName','phiDot')
+    plot(T,P(:,8),'--','Color',[0 0.5 0],'DisplayName','phiDot')
     hold off 
 end
 if plot_flag(9)

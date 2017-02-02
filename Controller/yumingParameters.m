@@ -8,7 +8,7 @@ param.ter_i = 0;          % terrain label (0 is flag terrain)
 %% Joint mass, inertia and length parameters
 % Main body segment
 param.m1 = simParam(1);   %[kg]         Mass of main body segment 
-param.J1 = simParam(2);   %[kgm^2]      Rotational inertia of main body segment 
+param.J1 = simParam(2)*1000;   %[kgm^2]      Rotational inertia of main body segment 
 param.lH = simParam(3);   %[m]          Distance from main body CoM to hip center
 
 % Thigh segments
@@ -42,7 +42,7 @@ param.du_rot_max = 838;   %[rad/s]      Maximum rotor velocity torque
 %% Virtual Component (a spring between body and foot)
 param.k = 5000;%500;            % spring constant   
 param.d = 10;             % spring damping 
-param.beta_eq = -20*pi/180;%-20*pi/180;
+param.beta_eq = -20*pi/180;
                           % knee relax angle
 
 param.L_sp0 = simParam(3) + (simParam(7)^2+simParam(11)^2 ...

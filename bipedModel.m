@@ -12,11 +12,11 @@ F_SAVEVID = 1;          % Save generated animation
 relTol  = 1e-6;         % Relative tolerance: Relative tolerance for ode45 numerical integration
 absTol  = 1e-6;         % Absolute tolerance: Absolute tolerance for ode45 numerical integration 
 dt      = 0.01;%[s]    % Max time step: Maximum time step for numerica integration 
-tFinal  = 2;   %[s]    % Simulation end time
+tFinal  = 5;   %[s]    % Simulation end time
 
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
-y0 = 1;       %[m]    % initial Y position
+y0 = 0.6;       %[m]    % initial Y position
 body_rot = 0;
 phi0 = 0+body_rot;       %[rad]  % initial angle between vertical and hip
 alpha0 = pi/6+body_rot;     %[rad]  % iniial angle between hip and thigh
@@ -124,7 +124,6 @@ while T(end) < tFinal
             if k_des < Yparam.k
                 k_des = Yparam.k;
             end
-            k_des = Yparam.k ;
             k_des_forPlot = [k_des_forPlot; k_des Tp(end)];
         elseif(Ie == 2 || Ie == 3 || Ie == 4)
             S = [S;Sp(2:sz,:)];
