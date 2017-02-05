@@ -51,7 +51,7 @@ if phase == 2
 elseif phase == 3
     tar_vel = 0; 
     % testing
-%     tar_vel = 1.5; 
+    tar_vel = 1; 
 %     tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
     
     % P controller parameters

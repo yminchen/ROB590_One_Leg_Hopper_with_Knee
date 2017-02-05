@@ -2,8 +2,8 @@ function param = simParameters()
     
     % Main body segment
     m1 = 7.9026;       %[kg]         Mass of main body segment 
-    J1 = 0.08*1000;         %[kgm^2]      Rotational inertia of main body segment 
-    lH = 0.138;     %[m]          Distance from main body CoM to hip center
+    J1 = 0.08;         %[kgm^2]      Rotational inertia of main body segment 
+    lH = 0.138;        %[m]          Distance from main body CoM to hip center
 
     % Thigh segments
     m2 = 0.7887;       %[kg]         Mass of thigh segment

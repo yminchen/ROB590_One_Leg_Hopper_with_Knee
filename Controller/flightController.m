@@ -39,23 +39,30 @@ end
 % theta_tar = 0; % for debugging
 
 %% Hip joint
+%==========
 % When the spring is between hip and foot: 
-alpha_tar = -x(3) + theta_tar + Yparam.theta2;
-%------
+% alpha_tar = -x(3) + theta_tar + Yparam.theta2;
+%==========
 % When the spring is between body and foot:
+% Way I (analytically)-----------
+alpha_tar = alpha_desired(theta_tar,-x(3),-beta_0,lH,lL2,lL3);
+% Way II (numerically)-----------
 % (use Newton's method to solve for alpha_tar numerically)
+% (this method is not working now. maybe a bug somewhere)
 % epsilon = 0.000001;
 % delta = 1;
 % phi = pi/4;
 % loop = 1;
 % while (delta>epsilon) && (loop<20)
+%     phi_pre = phi;
 %     A = lH*sin(-x(3)+theta_tar);
 %     B = lL3*sin(pi-phi+beta_0);
 %     phi = asin((A+B)*lH*sin(-x(3)+theta_tar)/(A*lL2));
+%     delta = abs(phi - phi_pre);
 %     loop = loop +1;
 % end
-% alpha_tar = -x(3)+theta_tar+phi;
-%------
+% alpha_tar = -x(3) + theta_tar + phi;
+%==========
 % PD controller parameters
 kp = 10;    % 10
 kd = 0.5;   % 0.5

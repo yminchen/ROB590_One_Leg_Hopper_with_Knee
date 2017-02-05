@@ -38,7 +38,7 @@ figure(fignum); clf;
 hold on
 axis equal; 
 axis([boarderL boarderR -0.1 boarderT])
-axis([boarderL 2 -0.1 2])
+% axis([boarderL 2 -0.1 2])
 
 % Plot ground
 edge = Terrain_edge(ter_i);
