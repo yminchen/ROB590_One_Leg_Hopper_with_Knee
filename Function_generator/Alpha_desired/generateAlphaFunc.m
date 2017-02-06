@@ -1,4 +1,4 @@
-%% This code generates the transformation matrix of virtual force
+%% This code generates the function for the desired hip angle during flight phase
 clear; clc; 
 
 %% Defination

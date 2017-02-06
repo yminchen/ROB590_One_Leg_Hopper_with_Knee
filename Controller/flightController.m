@@ -39,10 +39,10 @@ end
 % theta_tar = 0; % for debugging
 
 %% Hip joint
-%==========
+%=========================================
 % When the spring is between hip and foot: 
 % alpha_tar = -x(3) + theta_tar + Yparam.theta2;
-%==========
+%=========================================
 % When the spring is between body and foot:
 % Way I (analytically)-----------
 alpha_tar = alpha_desired(theta_tar,-x(3),-beta_0,lH,lL2,lL3);
@@ -62,7 +62,7 @@ alpha_tar = alpha_desired(theta_tar,-x(3),-beta_0,lH,lL2,lL3);
 %     loop = loop +1;
 % end
 % alpha_tar = -x(3) + theta_tar + phi;
-%==========
+%=========================================
 % PD controller parameters
 kp = 10;    % 10
 kd = 0.5;   % 0.5

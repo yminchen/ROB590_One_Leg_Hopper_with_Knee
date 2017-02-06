@@ -51,7 +51,7 @@ if phase == 2
 elseif phase == 3
     tar_vel = 0; 
     % testing
-    tar_vel = 1; 
+    tar_vel = 2;%1; 
 %     tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
     
     % P controller parameters
@@ -73,7 +73,7 @@ F(3) = tau_balance;
 % Just for testing
 % F(3) = 0;
 
-%% when the virtual spring is between the body and the foot
+%% WAY I: when the virtual spring is between the body and the foot
 %% Conversion
 phi_f = -(x(3)+x(4)+x(5));
 JT = J_virtual_force(phi_f,x(5),x(4),Yparam.lH,Yparam.lL2,Yparam.lL3);
@@ -83,7 +83,7 @@ tau(4) = tau_kh(2);
 %% Knee joint
 tau(5) = tau_kh(1); 
 
-%% when the virtual spring is between the hip and the foot
+%% WAY II: when the virtual spring is between the hip and the foot
 % %% Conversion
 % theta_a = -(x(3)+x(4)+x(5));
 % theta_k = x(4);
@@ -93,8 +93,5 @@ tau(5) = tau_kh(1);
 % tau(4) = tau_kh(2);
 % %% Knee joint
 % tau(5) = tau_kh(1);
-
-%% testing
-% tau = zeros(5,1);
 
 end

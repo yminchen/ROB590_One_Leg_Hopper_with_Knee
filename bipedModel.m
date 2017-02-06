@@ -5,14 +5,14 @@ addpath('Functions','Dynamics','Events',...
     'Visualization/yumingPlot');
 %% Flags 
 F_PLOT = 0;             % Plot system response
-F_ANIMATE = 1;          % Animate system response
 F_SAVEPLOT = 0;         % Save generated plot
+F_ANIMATE = 1;          % Animate system response
 F_SAVEVID = 1;          % Save generated animation   
 %% Simulation control
 relTol  = 1e-6;         % Relative tolerance: Relative tolerance for ode45 numerical integration
 absTol  = 1e-6;         % Absolute tolerance: Absolute tolerance for ode45 numerical integration 
-dt      = 0.01;%[s]    % Max time step: Maximum time step for numerica integration 
-tFinal  = 5;   %[s]    % Simulation end time
+dt      = 0.01; %[s]    % Max time step: Maximum time step for numerica integration 
+tFinal  = 10;%0.65;    %[s]    % Simulation end time
 
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
@@ -33,12 +33,21 @@ t_prev_stance = Yparam.t_prev_stance;   %[s]
 t_prev_stance_forPlot = [t_prev_stance 0]; 
 prev_t = 0;
 dx_des = 0;         % desired speed (initialized to be 0)
+dx_des_forPlot = [dx_des 0];
 E_low = 0;          % energy at lowest point (initialized to be 0)
 E_des = 0;          % desired energy (initialized to be 0)
 L_sp_low = 0;       % spring length when mass reaches lowest height 
 k_des = 0;          % desired spring constant during the thrust phase
 k_des_forPlot = [k_des 0];
 x_td = 0;           % state vector at previous touchdown 
+
+% plotting settings
+F_yuming_plot = 1;  % flag for plotting
+plot_flag_index = [6 3 8 15 16 17 18];
+plot_flag_index = [3 8 ];
+plot_flag_index = [13 14];
+n_plot = 18;
+%P = [S, L, dL, E, E_des, tau, F_c]
 
 %% Simulation 
 %Setting up simulation
@@ -75,6 +84,8 @@ while T(end) < tFinal
             elseif dx_des<-Yparam.max_dx_des
                 dx_des = -Yparam.max_dx_des;
             end
+%             dx_des = 0; % TODO: delete this line. It's just for testing.
+            dx_des_forPlot = [dx_des_forPlot;dx_des Tp(end)]; 
             % state vector at touch down
             x_td = Sp(end,:);
             % length speed at touch down
@@ -97,16 +108,16 @@ while T(end) < tFinal
         sz = size(Sp,1);
         DS = [DS;DS(end)*ones(sz-1,1)];
         
-%         disp(size(Ie));
+        %disp(size(Ie));
         if(isempty(Ie) == 1) % Simulation timed out
             display('Time out');
-        elseif(Ie == 1) % Takeoff event
+        elseif(Ie(end) == 1) % Takeoff event
             display('Takeoff');
             DS(end) = 1;
             % Yu-Ming's parameter
             t_prev_stance = Tp(end) - prev_t;
             t_prev_stance_forPlot = [t_prev_stance_forPlot; t_prev_stance Tp(end)]; 
-        elseif(Ie == 5) % Reach the lowest height
+        elseif(Ie(end) == 5) % Reach the lowest height
             display('thrust begins');
             DS(end) = 3;
             % calculate spring length and energy at lowest height
@@ -118,19 +129,24 @@ while T(end) < tFinal
             E_des = m_tot*9.81*(Yparam.H+Terrain(Sp(end,1)+Sp(end,6)*t_prev_stance/2,Yparam.ter_i))...
                     + 0.5*m_tot*dx_des^2;
                     %+ pi/4*Yparam.d*dL*(Yparam.L_sp0-L_sp_low);
-                
+            %disp(E_des);
+            
             %k_des = Yparam.k + 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
             k_des = Yparam.k + 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
-            if k_des < Yparam.k
-                k_des = Yparam.k;
-            end
+            k_des = 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
+            k_des = 2*(E_des-E_low)/(Yparam.L_sp0-sum((posH-posF).^2)^0.5)^2;
+            k_des = Yparam.k*99/100 + 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
+%             if k_des < Yparam.k
+%                 k_des = Yparam.k;
+%                 %disp('here');
+%             end
             k_des_forPlot = [k_des_forPlot; k_des Tp(end)];
-        elseif(Ie == 2 || Ie == 3 || Ie == 4)
+        elseif(Ie(end) == 2 || Ie(end) == 3 || Ie(end) == 4)
             S = [S;Sp(2:sz,:)];
             T = [T;Tp(2:sz,:)];
             display('Contact point is not feet');
             break;
-        elseif Ie == 6
+        elseif Ie(end) == 6
             display('ERROR: Contact force was negative');
 %             S = [S;Sp(2:sz,:)];
 %             T = [T;Tp(2:sz,:)];
@@ -143,13 +159,13 @@ while T(end) < tFinal
     T = [T;Tp(2:sz,:)];
 end
 
-%% Post processing 
-if F_PLOT || F_SAVEPLOT
-    plotResp
-else
-end
+%% Plot 
 
-F_yuming_plot = 1;
+% if F_PLOT || F_SAVEPLOT
+%     plotResp
+% else
+% end
+
 if F_yuming_plot
     yumingPlot;
 end
