@@ -23,7 +23,8 @@ elseif dx_des<-Yparam.max_dx_des
 end
 
 % dx_des = 1; % for tuning kp_rai
-dx_des = 0; % for testing
+% dx_des = 0.1; % for tuning kp_rai
+% dx_des = 0; % for testing
 
 % Raibert style controller parameters
 kp_rai = Yparam.k_f(3);
@@ -37,8 +38,8 @@ elseif theta_tar < -max_theta_tar
     theta_tar = -max_theta_tar;
 end
 
-%theta_tar = 1; % for tuning the next PD controller
-theta_tar = 0; % for debugging
+% theta_tar = 1; % for tuning the next PD controller
+% theta_tar = 0; % for debugging
 
 %% Hip joint (Old version: Calculate desired alpha first)
 % %=========================================

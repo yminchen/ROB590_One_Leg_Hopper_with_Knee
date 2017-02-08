@@ -1,11 +1,11 @@
-function dxdt = groundDyn(t,x,phase,t_prev_stance,k_des)
+function dxdt = groundDyn(t,x,phase,t_prev_stance,k_des,dx_des)
     param = simParameters();
     dxdt = zeros(size(x));
     n = size(x,1);
     dxdt(1:n/2) = x(n/2+1:n);
     
     % controller
-    tau = groundController(x,phase,k_des);
+    tau = groundController(x,phase,k_des,dx_des);
     
     M = MassMatrix(x(1:5),param);
     invM = inverseMassMatrix(x(1:5),param);

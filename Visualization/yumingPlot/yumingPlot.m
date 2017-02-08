@@ -41,11 +41,8 @@ L = zeros(n,1);
 if plot_flag(11) || plot_flag(12)
     for i = 1:n
         % length of the virtual spring
-        CoG = CoG_tot(S(i,1:5)',param);
-        posF = posFoot(S(i,1:5)',param);
-        theta = atan2((posF(1)-CoG(1)),(CoG(2)-posF(2)));
-        dL(i) = -S(i,6)*sin(theta)+S(i,7)*cos(theta); %TODO: This line of code is only correct during stance phase.
-        L(i) = sum((CoG-posF).^2)^0.5;
+        L(i) = SpringLength(S(i,1:5)',param);
+        dL(i) = dSpringLength(S(i,:)',param);
     end
 end
 
@@ -61,6 +58,7 @@ end
 %TODO: if it's uneven terrain, them this part should be modified.
 E_des = zeros(n,1);
 if plot_flag(14)
+    m_tot = param(1)+param(4)+param(8);
     E_des_temp = m_tot*9.81*(Yparam.H+Terrain(S(1,1)+S(1,6)*Yparam.t_prev_stance/2,Yparam.ter_i))...
                 + 0.5*m_tot*dx_des(1)^2;
     for i = 2:n
@@ -199,8 +197,9 @@ title('One-leg Hopper')
 xlabel('Time (s)')
 
 %% second plot (trajectory)
-figure;
-plot(P(:,1),P(:,2),'b')
-title('Trayjectory of One-leg Hopper')
-xlabel(' (m)')
-ylabel(' (m)')
+figure; 
+plot(P(:,1),P(:,2),'b');
+axis equal;
+title('Trayjectory of One-leg Hopper');
+xlabel(' (m)');
+ylabel(' (m)');

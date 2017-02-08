@@ -3,10 +3,10 @@ function Animation(T,X,S,tFinal,F_SAVEVID)
 % settings
 fignum = 1;         % figure number
 param = simParameters();
+Yparam = yumingParameters();
 
-% the parameters that should be passed in here in a later version of code
-ter_i = 0;
-target_pos = 10;
+ter_i = Yparam.ter_i;
+target_pos = Yparam.target_pos;
 
 %% Preprocessing
 % Calculate max min velocity

@@ -1,19 +1,25 @@
-function tau = groundController(x,phase,k_des)
+function tau = groundController(x,phase,k_des,dx_des)
 tau = zeros(5,1);
 
 %% parameters
 param = simParameters();
 Yparam = yumingParameters();
 
+%% Why can't I just used the dx_des that is passed to this function?
+dx_des = -Yparam.k_f(1)*2*(x(1)-Yparam.target_pos)...
+         -Yparam.k_f(2)*x(6);
+if dx_des>Yparam.max_dx_des
+    dx_des = Yparam.max_dx_des;
+elseif dx_des<-Yparam.max_dx_des
+    dx_des = -Yparam.max_dx_des;
+end
+
+
 %% Virtual force
 F = zeros(3,1);
 
-posF = posFoot(x(1:5),param);
-% posH = posHip(x(1:5),param);
-% posB = [x(1);x(2)];
-CoG = CoG_tot(x(1:5),param);
-theta = atan2((posF(1)-CoG(1)),(CoG(2)-posF(2)));
-L_sp = sum((posF-CoG).^2)^0.5;
+theta = Theta(x(1:5),param);
+L_sp = SpringLength(x(1:5),param);
 
 k = Yparam.k;
 if phase == 3
@@ -36,9 +42,9 @@ if phase == 2
     tar_angle = 0; 
 
     % PD controller parameters
-    kp = 100;    % 10
+    kp = 200;    % 10
     kd = 5;   % 0.5
-    max_f = 100;    % maximum torque that can be applied
+    max_f = 1000;    % maximum torque that can be applied
     % PD controller for desired phi.
     err = x(3) - tar_angle;
     derr =  x(8);     
@@ -50,15 +56,17 @@ if phase == 2
     end
     
 elseif phase == 3
-    tar_vel = 0; 
-    % testing
-%     tar_vel = 2;%1; 
-%     tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
+    % I found the robot lean forward too much with tar_vel = 0.
+    tar_vel = 1.5*dx_des + 2.5;
+                % if dx_des = 1, then tar_vel should be 4
+                % if dx_des = 0, then tar_vel should be 2.5
+    % Failed try:
+    % tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
     
     % P controller parameters
     kp = 10;%*50;       % 2
     % kd = 0.2;   % 0.2
-    max_f = 100;    % maximum torque that can be applied
+    max_f = 1000;    % maximum torque that can be applied
     % P controller for desired angular velocity.
     err = x(8) - tar_vel;
     % derr =  x(5)-x(6);
@@ -94,5 +102,7 @@ tau(5) = tau_kh(1);
 % tau(4) = tau_kh(2);
 % %% Knee joint
 % tau(5) = tau_kh(1);
+
+%% testing
 
 end

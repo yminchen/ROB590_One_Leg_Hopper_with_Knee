@@ -34,6 +34,7 @@ if plot_flag(10)
 end
 if plot_flag(11)
     plot(T,P(:,11),'Color',[0.5 0 0],'DisplayName','L (m)')
+    plot([T(1) T(end)],[Yparam.L_sp0 Yparam.L_sp0],'k--','DisplayName','L_{eq} (m)')
 end
 if plot_flag(12)
     plot(T,P(:,12),'--','Color',[0.5 0 0],'DisplayName','LDot (m/s)')
