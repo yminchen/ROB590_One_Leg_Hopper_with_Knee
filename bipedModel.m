@@ -91,7 +91,7 @@ while T(end) < tFinal
             display('Flight Phase: Invalid event code');
         end
     elseif(DS(end) == 2)||(DS(end) == 3)
-        gndSimOpts = odeset('RelTol',relTol,'AbsTol',absTol,'Events',@(t,x) groundEvent(t,x,DS(end),k_des),'MaxStep',dt);
+        gndSimOpts = odeset('RelTol',relTol,'AbsTol',absTol,'Events',@(t,x) groundEvent(t,x,DS(end),k_des,dx_des),'MaxStep',dt);
         [Tp,Sp,TEp,SEp,Ie] = ode45(@(t,x) groundDyn(t,x,DS(end),...
             t_prev_stance,k_des,dx_des),[tspan, tspan(end)+dt],S(end,:),gndSimOpts);
         sz = size(Sp,1);
@@ -153,17 +153,19 @@ end
 
 % plotting settings
 F_yuming_plot = 1;  % flag for plotting
+% Reference: P = [S, L, dL, E, E_des, tau, F_c, Theta, dTheta]
+n_plot = 20;
 plot_flag_index = [3 8 15 16 17 18];
 plot_flag_index = [3 8 15 16 ];
-plot_flag_index = [1 3 8 ]; % look at phi
-% plot_flag_index = [13 14]; % look at energy
-%plot_flag_index = [15 16 19 20]; % tune PD controller for theta in flight
-%plot_flag_index = [5  10]; % tune PD controller for knee in flight
-% plot_flag_index = [11 12]; % look at spring length and speed
-% plot_flag_index = [6]; % x velocity
-% plot_flag_index = [1 6]; % x
-n_plot = 20;
-%P = [S, L, dL, E, E_des, tau, F_c, Theta, dTheta]
+plot_flag_index = [1 3 8 ];   % look at phi
+% plot_flag_index = [13 14];    % look at energy
+% plot_flag_index = [15 16 19 20]; % tune PD controller for theta in flight
+% plot_flag_index = [5  10];    % tune PD controller for knee in flight
+% plot_flag_index = [11 12];    % look at spring length and speed
+% plot_flag_index = [6];        % x velocity
+% plot_flag_index = [1 6];      % x
+% plot_flag_index = [17 18];
+
 if F_yuming_plot
     yumingPlot;
 end

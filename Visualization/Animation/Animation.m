@@ -27,16 +27,15 @@ if F_SAVEVID
     F(length(T)).cdata = []; F(length(T)).colormap = []; % preallocate
 end
 
-boarderR = max(X(:,1))+1;
-boarderL = min(X(:,1))-2;
-boarderT = max(X(:,2))+0.5;
-
-
 %%%%% Prepare figure %%%%
 figure(fignum); clf; 
 %%%%% Plot physical world %%%%
 hold on
 axis equal; 
+% boarder of the world
+boarderR = max(X(:,1))+1;
+boarderL = min(X(:,1))-2;
+boarderT = max(X(:,2))+0.5;
 axis([boarderL boarderR -0.1 boarderT])
 % axis([boarderL 2 -0.1 2])
 
@@ -66,22 +65,36 @@ ylabel(' (m)')
 % Skeleton plot =============================
 posB = [0 0];
 posH = [0 0];
+CoGT = [0 0]; % CoG of thigh
 posK = [0 0];
+CoGS = [0 0]; % CoG of shank
 posF = [0 0];
+% size of the plot
+CoGBodySize = 120-((120-40)/(7-3))*((boarderR-boarderL)-3); 
+            % 120 when world width = 3m. 40 when world width = 7m. 
+CoGThighSize = 50-((50-15)/(7-3))*((boarderR-boarderL)-3);  
+            % 50 when world width = 3m. 15 when world width = 7m.  
+LinkWidth = 3-((3-1.5)/(7-3))*((boarderR-boarderL)-3);  
+            % 3 when world width = 3m. 1.5 when world width = 7m.
+
+% Plot CoG of body
+a0 = scatter(posB(1), posB(2),CoGBodySize,'MarkerEdgeColor',[0 0 0],...
+          'MarkerFaceColor',[0 0 1],...
+          'LineWidth',1.5);
 % Plot body link
-a1 = plot([posH(1) posB(1)],[posH(2) posB(2)],'k','LineWidth',3);
-% Plot hip
-a2 = scatter(posH(1), posH(2),40,'MarkerEdgeColor',[0 0 0],...
+a1 = plot([posH(1) posB(1)],[posH(2) posB(2)],'k','LineWidth',LinkWidth);
+% Plot CoG of thigh
+a2 = scatter(CoGT(1), CoGT(2),CoGThighSize,'MarkerEdgeColor',[0 0 0],...
           'MarkerFaceColor',[0 0 1],...
           'LineWidth',1.5);
 % Plot thigh
-a3 = plot([posH(1) posK(1)],[posH(2) posK(2)],'k','LineWidth',3);
-% Plot knee 
-a4 = scatter(posK(1), posK(2),40,'MarkerEdgeColor',[0 0 0],...
+a3 = plot([posH(1) posK(1)],[posH(2) posK(2)],'k','LineWidth',LinkWidth);
+% Plot CoG of shank
+a4 = scatter(CoGS(1), CoGS(2),CoGThighSize,'MarkerEdgeColor',[0 0 0],...
           'MarkerFaceColor',[0 0 1],...
           'LineWidth',1.5);
 % Plot shin
-a5 = plot([posF(1) posK(1)],[posF(2) posK(2)],'k','LineWidth',3);
+a5 = plot([posF(1) posK(1)],[posF(2) posK(2)],'k','LineWidth',LinkWidth);
 
 % Display time on plot
 a6 = text(0.8*boarderL,0.1*boarderT,['' ...
@@ -99,17 +112,21 @@ for ti=1:length(T)
     % plot robot
     posB = posBody(X(ti,1:5)',param);
     posH = posHip(X(ti,1:5)',param);
+    CoGT = CoGThigh(X(ti,1:5)',param);
     posK = posKnee(X(ti,1:5)',param);
+    CoGS = CoGShank(X(ti,1:5)',param);
     posF = posFoot(X(ti,1:5)',param);
     
+    % Plot CoG of body
+    set(a0,'XData',posB(1),'YData',posB(2));
     % Plot body link
     set(a1,'XData',[posH(1) posB(1)],'YData',[posH(2) posB(2)]);
-    % Plot hip
-    set(a2,'XData',posH(1),'YData',posH(2));
+    % Plot CoG of thigh
+    set(a2,'XData',CoGT(1),'YData',CoGT(2));
     % Plot thigh
     set(a3,'XData',[posH(1) posK(1)],'YData',[posH(2) posK(2)]);
-    % Plot knee 
-    set(a4,'XData',posK(1),'YData',posK(2));
+    % Plot CoG of shank
+    set(a4,'XData',CoGS(1),'YData',CoGS(2));
     % Plot shin
     set(a5,'XData',[posF(1) posK(1)],'YData',[posF(2) posK(2)]);
     

@@ -5,14 +5,14 @@ tau = zeros(5,1);
 param = simParameters();
 Yparam = yumingParameters();
 
-%% Why can't I just used the dx_des that is passed to this function?
-dx_des = -Yparam.k_f(1)*2*(x(1)-Yparam.target_pos)...
-         -Yparam.k_f(2)*x(6);
-if dx_des>Yparam.max_dx_des
-    dx_des = Yparam.max_dx_des;
-elseif dx_des<-Yparam.max_dx_des
-    dx_des = -Yparam.max_dx_des;
-end
+
+% dx_des = -Yparam.k_f(1)*2*(x(1)-Yparam.target_pos)...
+%          -Yparam.k_f(2)*x(6);
+% if dx_des>Yparam.max_dx_des
+%     dx_des = Yparam.max_dx_des;
+% elseif dx_des<-Yparam.max_dx_des
+%     dx_des = -Yparam.max_dx_des;
+% end
 
 
 %% Virtual force

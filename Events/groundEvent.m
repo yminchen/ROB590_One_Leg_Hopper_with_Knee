@@ -1,8 +1,8 @@
-function [position, isterminal, direction] = groundEvent(t,x,phase,k_des)
+function [position, isterminal, direction] = groundEvent(t,x,phase,k_des,dx_des)
     param = simParameters();
     n = size(x,1);
     
-    tau = groundController(x,phase,k_des);
+    tau = groundController(x,phase,k_des,dx_des);
     
     M = MassMatrix(x(1:5),param);
     invM = inverseMassMatrix(x(1:5),param);

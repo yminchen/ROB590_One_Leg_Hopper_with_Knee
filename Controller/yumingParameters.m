@@ -40,7 +40,7 @@ param.T_rot_max = 0.568;  %[Nm]         Maximum rotor torque
 param.du_rot_max = 838;   %[rad/s]      Maximum rotor velocity torque
 
 %% Virtual Component (a spring between CoG and foot)
-param.k = 20000;%5000;            % spring constant   
+param.k = 10000;%5000;            % spring constant   
 param.d = 10;             % spring damping 
 param.beta_eq = -20*pi/180;
                           % knee relax angle
