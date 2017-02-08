@@ -1,6 +1,7 @@
 %% Some minor housekeeping 
 clear; clc; clf; close all;
 addpath('Functions','Dynamics','Events',...
+    'Controller','Controller/Flight','Controller/Stance',...
     'Visualization','Visualization/Animation/','Visualization/Animation/Terrain',...
     'Visualization/yumingPlot');
 %% Flags 
@@ -12,15 +13,15 @@ F_SAVEVID = 1;          % Save generated animation
 relTol  = 1e-6;         % Relative tolerance: Relative tolerance for ode45 numerical integration
 absTol  = 1e-6;         % Absolute tolerance: Absolute tolerance for ode45 numerical integration 
 dt      = 0.01; %[s]    % Max time step: Maximum time step for numerica integration 
-tFinal  = 10;%0.65;    %[s]    % Simulation end time
+tFinal  = 0.5;    %[s]    % Simulation end time
 
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
-y0 = 0.6;       %[m]    % initial Y position
+y0 = 2;       %[m]    % initial Y position
 body_rot = 0;
-phi0 = -pi/6+body_rot;       %[rad]  % initial angle between vertical and hip
-alpha0 = pi/3+body_rot;     %[rad]  % iniial angle between hip and thigh
-beta0 = -pi/3+body_rot;      %[rad]  % initial angle between thigh and shank
+phi0 = body_rot;       %[rad]  % initial angle between vertical and hip
+alpha0 = 0+body_rot;     %[rad]  % iniial angle between hip and thigh
+beta0 = 0+body_rot;      %[rad]  % initial angle between thigh and shank
 vx0 = 0;        %[m/s]  % initial X velociy 
 vy0 = 0;        %[m/s]  % initial Y velociy
 vphi0 = 0;      %[rad/s]% initial phi angular velocity
@@ -44,14 +45,20 @@ x_td = 0;           % state vector at previous touchdown
 % plotting settings
 F_yuming_plot = 1;  % flag for plotting
 plot_flag_index = [6 3 8 15 16 17 18];
-plot_flag_index = [3 8 ];
-plot_flag_index = [13 14];
-n_plot = 18;
-%P = [S, L, dL, E, E_des, tau, F_c]
+plot_flag_index = [3 8 ]; % look at phi
+plot_flag_index = [13 14]; % look at energy
+%plot_flag_index = [15 16 19 20]; % tune PD controller for theta in flight
+%plot_flag_index = [5  10]; % tune PD controller for knee in flight
+n_plot = 20;
+%P = [S, L, dL, E, E_des, tau, F_c, Theta, dTheta]
 
 %% Simulation 
 %Setting up simulation
 param = simParameters();
+
+
+% Can be deleted
+m_tot = param(1)+param(4)+param(8);
 
 T(1) = 0;
 S(1,:) = [x0;y0;phi0;alpha0;beta0;vx0;vy0;vphi0;valpha0;vbeta0];
@@ -89,9 +96,9 @@ while T(end) < tFinal
             % state vector at touch down
             x_td = Sp(end,:);
             % length speed at touch down
-            posH = posHip(x_td(1:5)',param);
+            CoG = CoG_tot(x_td(1:5)',param);
             posF = posFoot(x_td(1:5)',param);
-            theta = atan((posF(1)-posH(1))/(posH(2)-posF(2)));
+            theta = atan2((posF(1)-CoG(1)),(CoG(2)-posF(2)));
             dL = abs(-x_td(6)*sin(theta)+x_td(7)*cos(theta)); 
         elseif(Ie == 2 || Ie == 3 || Ie == 4)
             S = [S;Sp(2:sz,:)];
@@ -134,7 +141,7 @@ while T(end) < tFinal
             %k_des = Yparam.k + 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
             k_des = Yparam.k + 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
             k_des = 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
-            k_des = 2*(E_des-E_low)/(Yparam.L_sp0-sum((posH-posF).^2)^0.5)^2;
+            k_des = 2*(E_des-E_low)/(Yparam.L_sp0-sum((CoG-posF).^2)^0.5)^2;
             k_des = Yparam.k*99/100 + 2*(E_des-E_low)/(Yparam.L_sp0-L_sp_low)^2;
 %             if k_des < Yparam.k
 %                 k_des = Yparam.k;

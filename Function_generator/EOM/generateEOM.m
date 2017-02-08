@@ -73,7 +73,7 @@ ddL_dqdt_dt = jacobian(dL_dqdt,q)*vq;
 % Getting EOM terms
 M = jacobian(dL_dqdt,vq).';
 M = simplify(M);
-invM = simplify(inv(M));
+%invM = simplify(inv(M));
 
 fCG = simplify(dL_dq - ddL_dqdt_dt);
 
@@ -89,13 +89,26 @@ dJFoot = simplify(dJFoot);
 %% Energy
 E = simplify(T+U);
 
+%% Center of mass of the whole system
+CoG_tot = (m1*CoG1+m2*CoG2+m3*CoG3)/(m1+m2+m3);
+
+%% Theta and dTheta(spring angle with respect to vertical line)
+% The spring is placed between CoG and foot.
+theta = atan2((Foot(1)-CoG_tot(1)),(CoG_tot(2)-Foot(2)));
+dtheta = jacobian(theta,q)*vq;
+
+%% L and dL (Virtual spring length and its changing speed)
+Length = sum((CoG_tot-Foot).^2)^0.5;
+%dL = -vq(1)*sin(theta)+vq(2)*cos(theta); %This line of code is only correct during stance phase.
+dLength = jacobian(Length,q)*vq;
+
 %% Create functions
 if ~exist('Functions','dir')
     mkdir('Functions');
 end
 
 matlabFunction(M,'file','Functions\MassMatrix','vars',{q,param});
-matlabFunction(invM,'file','Functions\inverseMassMatrix','vars',{q,param});
+%matlabFunction(invM,'file','Functions\inverseMassMatrix','vars',{q,param});
 matlabFunction(fCG,'file','Functions\FCorGrav','vars',{[q;vq],param});
 matlabFunction(JFoot,'file','Functions\JcontPoint','vars',{q,param});
 matlabFunction(dJFoot,'file','Functions\dJcontPoint','vars',{[q;vq],param});
@@ -104,3 +117,9 @@ matlabFunction(Hip,'file','Functions\posHip','vars',{q,param});
 matlabFunction(Knee,'file','Functions\posKnee','vars',{q,param});
 matlabFunction(Foot,'file','Functions\posFoot','vars',{q,param});
 matlabFunction(E,'file','Functions\energy','vars',{[q;vq],param});
+matlabFunction(CoG_tot,'file','Functions\CoG_tot','vars',{q,param});
+matlabFunction(theta,'file','Functions\Theta','vars',{q,param});
+matlabFunction(dtheta,'file','Functions\dTheta','vars',{[q;vq],param});
+matlabFunction(Length,'file','Functions\SpringLength','vars',{q,param});
+matlabFunction(dLength,'file','Functions\dSpringLength','vars',{[q;vq],param});
+

@@ -1,6 +1,6 @@
 
 %% initialize settings
-%P = [S, L, dL, E, E_des, tau, F_c]
+%P = [S, L, dL, E, E_des, tau, F_c, Theta, dTheta]
 
 % generate flags indicating which plot should be shown.
 plot_flag = zeros(1,n_plot);
@@ -41,11 +41,11 @@ L = zeros(n,1);
 if plot_flag(11) || plot_flag(12)
     for i = 1:n
         % length of the virtual spring
-        posH = posHip(S(i,1:5)',param);
+        CoG = CoG_tot(S(i,1:5)',param);
         posF = posFoot(S(i,1:5)',param);
-        theta = atan((posF(1)-posH(1))/(posH(2)-posF(2)));
+        theta = atan2((posF(1)-CoG(1)),(CoG(2)-posF(2)));
         dL(i) = -S(i,6)*sin(theta)+S(i,7)*cos(theta); %TODO: This line of code is only correct during stance phase.
-        L(i) = sum((posH-posF).^2)^0.5;
+        L(i) = sum((CoG-posF).^2)^0.5;
     end
 end
 
@@ -144,8 +144,19 @@ if plot_flag(17)||plot_flag(18)
     end
 end
 
+% theta and d_theta
+theta = zeros(n,1);
+d_theta = zeros(n,1);   
+if plot_flag(19)||plot_flag(20)
+    for i = 1:n
+        theta(i) = Theta(S(i,1:5)',param);
+        d_theta(i) = dTheta(S(i,:)',param);
+    end
+end
+
+
 % put all the data into P
-P = [S L dL E E_des tau F_c];
+P = [S L dL E E_des tau F_c theta d_theta];
 
 % height of the phase zone
 max_height = 0;

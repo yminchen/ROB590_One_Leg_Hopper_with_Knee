@@ -8,11 +8,12 @@ Yparam = yumingParameters();
 %% Virtual force
 F = zeros(3,1);
 
-% posH = posHip(x(1:5),param);
 posF = posFoot(x(1:5),param);
-posB = [x(1);x(2)];
-theta = atan((posF(1)-posB(1))/(posB(2)-posF(2)));
-L_sp = sum((posF-posB).^2)^0.5;
+% posH = posHip(x(1:5),param);
+% posB = [x(1);x(2)];
+CoG = CoG_tot(x(1:5),param);
+theta = atan2((posF(1)-CoG(1)),(CoG(2)-posF(2)));
+L_sp = sum((posF-CoG).^2)^0.5;
 
 k = Yparam.k;
 if phase == 3
@@ -51,7 +52,7 @@ if phase == 2
 elseif phase == 3
     tar_vel = 0; 
     % testing
-    tar_vel = 2;%1; 
+%     tar_vel = 2;%1; 
 %     tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
     
     % P controller parameters

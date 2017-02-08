@@ -39,15 +39,17 @@ param.beta_max = 0;       %[rad]        Maximum knee angle
 param.T_rot_max = 0.568;  %[Nm]         Maximum rotor torque
 param.du_rot_max = 838;   %[rad/s]      Maximum rotor velocity torque
 
-%% Virtual Component (a spring between body and foot)
-param.k = 5000;            % spring constant   
+%% Virtual Component (a spring between CoG and foot)
+param.k = 20000;%5000;            % spring constant   
 param.d = 10;             % spring damping 
 param.beta_eq = -20*pi/180;
                           % knee relax angle
 
-param.L_sp0 = simParam(3) + (simParam(7)^2+simParam(11)^2 ...
+param.L_sp0 = 0.5288;     % spring original length (m) 
+                          % (when theta=0 and knee bends beta_eq)
+% When the spring is between hip and foot: (L_sp0 need to be adjusted)
+param.L_sp0_BF = simParam(3) + (simParam(7)^2+simParam(11)^2 ...
                -2*simParam(7)*simParam(11)*cos(pi+param.beta_eq))^0.5;      
-                          % spring original length (m)
 % When the spring is between hip and foot: (L_sp0 need to be adjusted)
 param.L_sp0_HF = (simParam(7)^2+simParam(11)^2 ...
                -2*simParam(7)*simParam(11)*cos(pi+param.beta_eq))^0.5; 

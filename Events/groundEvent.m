@@ -32,9 +32,9 @@ function [position, isterminal, direction] = groundEvent(t,x,phase,k_des)
     direction(4)    = -1;
     
     %% detect lowest point
-    posH = posHip(x(1:5),param);
+    CoG = CoG_tot(x(1:5),param);
     posF = posFoot(x(1:5),param);
-    theta = atan((posF(1)-posH(1))/(posH(2)-posF(2)));
+    theta = atan2((posF(1)-CoG(1)),(CoG(2)-posF(2)));
     dL = -x(6)*sin(theta)+x(7)*cos(theta); 
     position(5)     = dL; % time derivative of virtual spring length.
     isterminal(5)   = 1;

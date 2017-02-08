@@ -56,4 +56,10 @@ end
 if plot_flag(18)
     plot(T,P(:,18),'Color',[0 0 1],'DisplayName','F_cy (N)')
 end
+if plot_flag(19)
+    plot(T,P(:,19),'Color',[1 0 0],'DisplayName','theta (rad)')
+end
+if plot_flag(20)
+    plot(T,P(:,20),'Color',[0 0 1],'DisplayName','dtheta (rad/s)')
+end
 hold off
