@@ -39,27 +39,33 @@ param.beta_max = 0;       %[rad]        Maximum knee angle
 param.T_rot_max = 0.568;  %[Nm]         Maximum rotor torque
 param.du_rot_max = 838;   %[rad/s]      Maximum rotor velocity torque
 
-%% Virtual Component (a spring between CoG and foot)
-param.k = 10000;%5000;            % spring constant   
+% Joint torque constraint
+param.tau_max = 25;       %[Nm]         Maximum rotor torque
+param.torque_limit_flag = 1;
+
+
+%% Virtual Component (a spring between hip and foot)
+param.k = 4000;%5000;            % spring constant   
 param.d = 10;             % spring damping 
 param.beta_eq = -20*pi/180;
                           % knee relax angle
-
-param.L_sp0 = 0.5288;     % spring original length (m) 
-                          % (when theta=0 and knee bends beta_eq)
-% When the spring is between hip and foot: (L_sp0 need to be adjusted)
-param.L_sp0_BF = simParam(3) + (simParam(7)^2+simParam(11)^2 ...
-               -2*simParam(7)*simParam(11)*cos(pi+param.beta_eq))^0.5;      
+                          
+% When the spring is between body and foot: (L_sp0 need to be adjusted)
+param.L_sp0 = simParam(3) + (simParam(7)^2+simParam(11)^2 ...
+               -2*simParam(7)*simParam(11)*cos(pi+param.beta_eq))^0.5;  
+% When the spring is between CoG and foot: (L_sp0 need to be adjusted)
+param.L_sp0_GF = 0.5288;  % spring original length (m) 
+                          % (when theta=0 and knee bends beta_eq)    
 % When the spring is between hip and foot: (L_sp0 need to be adjusted)
 param.L_sp0_HF = (simParam(7)^2+simParam(11)^2 ...
                -2*simParam(7)*simParam(11)*cos(pi+param.beta_eq))^0.5; 
 param.theta2 = asin(simParam(11)*sin(-param.beta_eq)/param.L_sp0_HF);
 
 %% controller parameters
-param.target_pos = 5;
+param.target_pos = 3;
 param.t_prev_stance = 0.2/(param.k/100);
-param.H = 0.7;            % desired height (effecting kp_rai and kp_pos!)
-param.max_dx_des = 1;     % maximum of desired speed (not real speed)
+param.H = 0.55;            % desired height (effecting kp_rai and kp_pos!)
+param.max_dx_des = 0.5;     % maximum of desired speed (not real speed)
         % max_dx_des can go to 8 or higher, but then it also jumps higher.
 % param.dx_des = 0;         % desired speed (initialized to be 0)
 % param.E_low = 0;          % energy at lowest point (initialized to be 0)
@@ -72,7 +78,7 @@ param.max_dx_des = 1;     % maximum of desired speed (not real speed)
 % position controller parameters
 kp_pos = 2;       
         % kp_pos depends on max_dx_des.
-kd_pos = 1.5;
+kd_pos = 2; 
 % Raibert controller parameter
 kp_rai = 0.04;      % Raibert sytle controller
         % kp_rai depends on H (the height) and k (the stiffness).

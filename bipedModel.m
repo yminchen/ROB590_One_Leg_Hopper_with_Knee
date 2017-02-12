@@ -13,7 +13,7 @@ F_SAVEVID = 1;          % Save generated animation
 relTol  = 1e-6;         % Relative tolerance: Relative tolerance for ode45 numerical integration
 absTol  = 1e-6;         % Absolute tolerance: Absolute tolerance for ode45 numerical integration 
 dt      = 0.01; %[s]    % Max time step: Maximum time step for numerica integration 
-tFinal  = 10;    %[s]    % Simulation end time
+tFinal  = 15;    %[s]    % Simulation end time
 
 %% Simulation parameters
 x0 = 0;         %[m]    % initial X position 
@@ -157,20 +157,20 @@ F_yuming_plot = 1;  % flag for plotting
 n_plot = 20;
 plot_flag_index = [3 8 15 16 17 18];
 plot_flag_index = [3 8 15 16 ];
-plot_flag_index = [1 3 8 ];   % look at phi
+% plot_flag_index = [3 8 ];   % look at phi
 % plot_flag_index = [13 14];    % look at energy
 % plot_flag_index = [15 16 19 20]; % tune PD controller for theta in flight
-% plot_flag_index = [5  10];    % tune PD controller for knee in flight
+% plot_flag_index = [5  10 15 16];    % tune PD controller for knee in flight
 % plot_flag_index = [11 12];    % look at spring length and speed
 % plot_flag_index = [6];        % x velocity
 % plot_flag_index = [1 6];      % x
-% plot_flag_index = [17 18];
+% plot_flag_index = [17 18];    % gound reaction force
 
 if F_yuming_plot
     yumingPlot;
 end
 
 %% Animation
-if F_ANIMATE
-    Animation(T,S,DS,T(end),F_SAVEVID);    
-end
+% if F_ANIMATE
+%     Animation(T,S,DS,T(end),F_SAVEVID);    
+% end

@@ -98,6 +98,7 @@ if plot_flag(15)||plot_flag(16)
             tau_temp = flightController(S(i,:)',t_prev_stance);
             tau(i,:) = tau_temp(4:5,1)';
         else
+            % get k_des
             for j = 2:size(k_des_forPlot,1)+1
                 if j == size(k_des_forPlot,1)+1
                     k_des = k_des_forPlot(j-1,1);
@@ -108,7 +109,18 @@ if plot_flag(15)||plot_flag(16)
                     break;
                 end
             end
-            tau_temp = groundController(S(i,:)',DS(i),k_des);
+            % get dx_des
+            for j = 2:size(dx_des_forPlot,1)+1
+                if j == size(dx_des_forPlot,1)+1
+                    dx_des = dx_des_forPlot(j-1,1);
+                    break;
+                end
+                if T(i)<dx_des_forPlot(j,2)
+                    dx_des = dx_des_forPlot(j-1,1);
+                    break;
+                end
+            end
+            tau_temp = groundController(S(i,:)',DS(i),k_des,dx_des);
             tau(i,:) = tau_temp(4:5,1)';
         end
     end
@@ -129,7 +141,18 @@ if plot_flag(17)||plot_flag(18)
                     break;
                 end
             end
-            tau_temp = groundController(S(i,:)',DS(i),k_des);
+            % get dx_des
+            for j = 2:size(dx_des_forPlot,1)+1
+                if j == size(dx_des_forPlot,1)+1
+                    dx_des = dx_des_forPlot(j-1,1);
+                    break;
+                end
+                if T(i)<dx_des_forPlot(j,2)
+                    dx_des = dx_des_forPlot(j-1,1);
+                    break;
+                end
+            end
+            tau_temp = groundController(S(i,:)',DS(i),k_des,dx_des);
 
             M = MassMatrix(S(i,1:5)',param);
             invM = inverseMassMatrix(S(i,1:5)',param);

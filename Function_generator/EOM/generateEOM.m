@@ -98,7 +98,7 @@ theta = atan2((Foot(1)-CoG_tot(1)),(CoG_tot(2)-Foot(2)));
 dtheta = jacobian(theta,q)*vq;
 
 %% L and dL (Virtual spring length and its changing speed)
-Length = sum((CoG_tot-Foot).^2)^0.5;
+Length = sum((CoG1-Foot).^2)^0.5;
 %dL = -vq(1)*sin(theta)+vq(2)*cos(theta); %This line of code is only correct during stance phase.
 dLength = jacobian(Length,q)*vq;
 

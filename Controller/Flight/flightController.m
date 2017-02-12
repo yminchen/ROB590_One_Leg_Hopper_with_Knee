@@ -89,8 +89,8 @@ end
 theta = Theta(x(1:5),param);
 d_theta = dTheta(x,param);
 % PD controller parameters
-kp = 25;    
-kd = 2.8;   
+kp = 120;    % 120 % 300
+kd = 4.8;    % 4.8 % 8
 max_f = 1000;    % maximum torque that can be applied
 % PD controller for desired phi.
 err = theta - theta_tar;
@@ -105,11 +105,11 @@ end
 
 % Assignment
 tau(4) = tau_hip;
-    
+
 %% Knee joint
 % PD controller parameters
-kp = 10;    
-kd = 0.6;   
+kp = 100;    
+kd = 0.9;   
 max_f = 1000;    % maximum torque that can be applied
 % PD controller for desired phi.
 err = x(5) - Yparam.beta_eq;
@@ -124,7 +124,16 @@ end
 % Assignment
 tau(5) = tau_knee;
 
-%% testing
-%tau = zeros(5,1);
+%% Limit
+tau_max = Yparam.tau_max;
+if Yparam.torque_limit_flag
+    if abs(tau(4))>tau_max
+        tau(4) = sign(tau(4))*tau_max;
+    end
+    if abs(tau(5))>tau_max
+        tau(5) = sign(tau(5))*tau_max;
+    end
+end
+
 
 end

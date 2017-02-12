@@ -72,10 +72,19 @@ posF = [0 0];
 % size of the plot
 CoGBodySize = 120-((120-40)/(7-3))*((boarderR-boarderL)-3); 
             % 120 when world width = 3m. 40 when world width = 7m. 
+if CoGBodySize<=0.1
+    CoGBodySize = 0.1;
+end
 CoGThighSize = 50-((50-15)/(7-3))*((boarderR-boarderL)-3);  
             % 50 when world width = 3m. 15 when world width = 7m.  
+if CoGThighSize<=0.1
+    CoGThighSize = 0.1;
+end
 LinkWidth = 3-((3-1.5)/(7-3))*((boarderR-boarderL)-3);  
             % 3 when world width = 3m. 1.5 when world width = 7m.
+if LinkWidth<=0.1
+    LinkWidth = 0.1;
+end
 
 % Plot CoG of body
 a0 = scatter(posB(1), posB(2),CoGBodySize,'MarkerEdgeColor',[0 0 0],...

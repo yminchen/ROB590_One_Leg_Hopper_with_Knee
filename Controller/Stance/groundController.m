@@ -42,8 +42,8 @@ if phase == 2
     tar_angle = 0; 
 
     % PD controller parameters
-    kp = 200;    % 10
-    kd = 5;   % 0.5
+    kp = 100;    % 10   % 200
+    kd = 4;      % 0.5  % 5
     max_f = 1000;    % maximum torque that can be applied
     % PD controller for desired phi.
     err = x(3) - tar_angle;
@@ -57,9 +57,9 @@ if phase == 2
     
 elseif phase == 3
     % I found the robot lean forward too much with tar_vel = 0.
-    tar_vel = 1.5*dx_des + 2.5;
+    tar_vel = 3*dx_des + 1;
                 % if dx_des = 1, then tar_vel should be 4
-                % if dx_des = 0, then tar_vel should be 2.5
+                % if dx_des = 0, then tar_vel should be 1
     % Failed try:
     % tar_vel = -((x(8)+x(9))*Yparam.J2+(x(8)+x(9)+x(10))*Yparam.J3)/Yparam.J1;
     
@@ -103,6 +103,16 @@ tau(5) = tau_kh(1);
 % %% Knee joint
 % tau(5) = tau_kh(1);
 
-%% testing
+%% Limit
+tau_max = Yparam.tau_max;
+if Yparam.torque_limit_flag
+    if abs(tau(4))>tau_max
+        tau(4) = sign(tau(4))*tau_max;
+    end
+    if abs(tau(5))>tau_max
+        tau(5) = sign(tau(5))*tau_max;
+    end
+end
+
 
 end
