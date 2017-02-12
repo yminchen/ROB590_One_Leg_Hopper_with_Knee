@@ -63,4 +63,10 @@ end
 if plot_flag(20)
     plot(T,P(:,20),'Color',[0 0 1],'DisplayName','dtheta (rad/s)')
 end
+if plot_flag(21)
+    plot(T,P(:,21),'Color',[0 0 1],'DisplayName','FootPos_x (m)')
+end
+if plot_flag(22)
+    plot(T,P(:,22),'Color',[0 0 1],'DisplayName','FootPos_y (m)')
+end
 hold off

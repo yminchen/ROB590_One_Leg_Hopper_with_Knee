@@ -64,7 +64,7 @@ param.theta2 = asin(simParam(11)*sin(-param.beta_eq)/param.L_sp0_HF);
 %% controller parameters
 param.target_pos = 3;
 param.t_prev_stance = 0.2/(param.k/100);
-param.H = 0.55;            % desired height (effecting kp_rai and kp_pos!)
+param.H = 0.6;            % desired height (effecting kp_rai and kp_pos!)
 param.max_dx_des = 0.5;     % maximum of desired speed (not real speed)
         % max_dx_des can go to 8 or higher, but then it also jumps higher.
 % param.dx_des = 0;         % desired speed (initialized to be 0)

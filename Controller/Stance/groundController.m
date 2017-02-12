@@ -58,6 +58,7 @@ if phase == 2
 elseif phase == 3
     % I found the robot lean forward too much with tar_vel = 0.
     tar_vel = 3*dx_des + 1;
+                % can change dx_des to x(6), so there is no delay.
                 % if dx_des = 1, then tar_vel should be 4
                 % if dx_des = 0, then tar_vel should be 1
     % Failed try:
@@ -114,5 +115,6 @@ if Yparam.torque_limit_flag
     end
 end
 
+%% Testing
 
 end

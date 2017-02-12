@@ -175,9 +175,17 @@ if plot_flag(19)||plot_flag(20)
     end
 end
 
+% Foot position (used to check the impact mapping)
+FootPos = zeros(n,2);
+if plot_flag(21)
+    for i = 1:n
+        FootPos(i,:) = posFoot(S(i,1:5)',param)';
+    end
+end
+
 
 % put all the data into P
-P = [S L dL E E_des tau F_c theta d_theta];
+P = [S L dL E E_des tau F_c theta d_theta FootPos];
 
 % height of the phase zone
 max_height = 0;
